@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
 using Blogorama.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blogorama.Web.Controllers
 {
@@ -25,13 +26,24 @@ namespace Blogorama.Web.Controllers
 
         public async Task<IActionResult> SignUp(SignupUserViewModel viewModel)
         {
-            var hashedPassword = HashPassword(viewModel.Password);
+            bool userExists = await CheckUserExists(viewModel.Email);
+            if (userExists)
+            {
+                TempData["Error"] = "Invalid email.";
+                return RedirectToAction("SignUp");
+            }
+
+            byte[] salt = GenerateSalt();
+            byte[] hashedPassword = HashPassword(viewModel.Password, salt);
+
+            string saltString = Convert.ToBase64String(salt);
+            string hashedPasswordString = Convert.ToBase64String(hashedPassword);
 
             var user = new User
             {
                 Name = viewModel.Name,
                 Email = viewModel.Email,
-                Password = hashedPassword,
+                Password = saltString + ":" + hashedPasswordString,
                 RegisteredAt = DateTime.Now
             };
 
@@ -40,13 +52,34 @@ namespace Blogorama.Web.Controllers
 
             return Redirect("/");
         }
+        //generate salt
+        private byte[] GenerateSalt()
+        {
+            byte[] salt = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+            return salt;
+        }
 
         //hash password
-        private string HashPassword(string password)
+        private byte[] HashPassword(string password, byte[] salt)
         {
-            using var sha256 = SHA256.Create();
-            byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(hashedBytes);
+            const int iterations = 10000;
+            const int derivedKeyLength = 32;
+
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256))
+            {
+                return pbkdf2.GetBytes(derivedKeyLength);
+            }
+        }
+
+
+        private async Task<bool> CheckUserExists(string email)
+        {
+            var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
+            return user != null;
 
         }
     }

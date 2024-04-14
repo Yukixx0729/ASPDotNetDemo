@@ -9,7 +9,7 @@
 
          <div class="mt-3">
             <label class="form-label">Email</label>
-            <input type="email" class="form-control" asp-for="Email" required/>
+            <input type="email" class="form-control" asp-for="Email" id="email" required/>
         </div>
 
          <div class="mt-3">
@@ -25,6 +25,15 @@
         <div class="mt-3">
              <button type="submit" class="btn btn-primary">Sign up</button>
         </div>
+        <div class="mt-3">
+             <p id="warning" class="text-danger"></p>
+        </div>
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                 @TempData["Error"]
+            </div>
+        }
 
     </form>
 </div>
@@ -34,13 +43,25 @@
     document.getElementById("signupForm").addEventListener("submit",function checkPassword(e){
         const password1 = document.getElementById("password1").value;
         const password2 = document.getElementById("password2").value;
-        console.log("?")
+        const warning = document.getElementById("warning")
+        warning.innerHTML =""
+
+        //check password
         if(password1 !== password2){
             event.preventDefault();
-
-            alert("Passwords do not match. please try again!")
+            warning.innerHTML="Passwords do not match. please try again!"
             document.getElementById("password1").value ="";
             document.getElementById("password2").value ="";
+        }else if(password1.length<8){
+            event.preventDefault();
+            warning.innerHTML="Password needs to be longer than 8 charaters!"
+            document.getElementById("password1").value ="";
+            document.getElementById("password2").value ="";
+        }else if(!(/[a-zA-Z]/.test(password1) && /\d/.test(password1))) {
+            e.preventDefault();
+            warning.innerHTML = "Password must contain both letters and numbers!";
+            document.getElementById("password1").value = "";
+            document.getElementById("password2").value = "";
         }
     })
 </script>

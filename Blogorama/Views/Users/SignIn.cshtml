@@ -1,0 +1,28 @@
+@model Blogorama.Models.Entities.User
+
+<div>
+    <form  id="signinForm" method="post">
+  
+         <div class="mt-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" asp-for="Email" id="email" required/>
+        </div>
+
+         <div class="mt-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" asp-for="Password" id="password1" required/>
+        </div>
+
+        <div class="mt-3">
+             <button type="submit" class="btn btn-primary">Sign up</button>
+        </div>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                 @TempData["Error"]
+            </div>
+        }
+
+    </form>
+</div>
