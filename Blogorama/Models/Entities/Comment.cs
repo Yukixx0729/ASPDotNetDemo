@@ -8,13 +8,13 @@ namespace Blogorama.Models.Entities
 
         [Required]
         [MaxLength(300)]
-        public string Content { get; set; }
+        public required string Content { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
-        public string UserId { get; set; }
+        public required string UserId { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual required ApplicationUser ApplicationUser { get; set; }
     }
 
 }

@@ -6,18 +6,18 @@ namespace Blogorama.Models.Entities
     {
         public Guid BlogId { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string Title { get; set; }
 
-        [Required]
-        public string Content { get; set; }
+        [MaxLength(50)]
+        public required string Title { get; set; }
+
+
+        public required string Content { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
-        public string UserId { get; set; }
+        public required string UserId { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual required ApplicationUser ApplicationUser { get; set; }
     }
 
 }

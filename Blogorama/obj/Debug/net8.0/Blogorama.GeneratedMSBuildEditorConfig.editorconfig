@@ -22,24 +22,16 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/yuki/sei/ownProject/personal projects/ASPDotNetDemo/Blogorama/Views/Register/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVnaXN0ZXIvUmVnaXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/yuki/sei/ownProject/personal projects/ASPDotNetDemo/Blogorama/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/yuki/sei/ownProject/personal projects/ASPDotNetDemo/Blogorama/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[/Users/yuki/sei/ownProject/personal projects/ASPDotNetDemo/Blogorama/Views/Users/MyBlogs.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvTXlCbG9ncy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[/Users/yuki/sei/ownProject/personal projects/ASPDotNetDemo/Blogorama/Views/Users/SignIn.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvU2lnbkluLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[/Users/yuki/sei/ownProject/personal projects/ASPDotNetDemo/Blogorama/Views/Users/SignUp.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvU2lnblVwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/yuki/sei/ownProject/personal projects/ASPDotNetDemo/Blogorama/Views/_ViewImports.cshtml]
