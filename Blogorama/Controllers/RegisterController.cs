@@ -1,8 +1,6 @@
-using Blogorama.Data;
 using Blogorama.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Blogorama.Models;
 using Blogorama.Models.Entities;
 
 
@@ -23,7 +21,7 @@ namespace Blogorama.Web.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View("Register");
+            return View();
         }
 
         [HttpPost]

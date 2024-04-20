@@ -39,4 +39,15 @@ name: "register",
 pattern: "Register",
 defaults: new { controller = "Register", action = "Register" });
 
+app.MapControllerRoute(
+name: "login",
+pattern: "Login",
+defaults: new { controller = "Login", action = "Login" });
+
+app.MapControllerRoute(
+name: "logout",
+pattern: "Logout",
+defaults: new { controller = "Logout", action = "Logout" });
+
+
 app.Run();
