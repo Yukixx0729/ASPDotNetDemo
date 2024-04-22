@@ -12,6 +12,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = "/Login";
+}
+);
 
 var app = builder.Build();
 
@@ -33,21 +38,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.MapControllerRoute(
-name: "register",
-pattern: "Register",
-defaults: new { controller = "Register", action = "Register" });
-
-app.MapControllerRoute(
-name: "login",
-pattern: "Login",
-defaults: new { controller = "Login", action = "Login" });
-
-app.MapControllerRoute(
-name: "logout",
-pattern: "Logout",
-defaults: new { controller = "Logout", action = "Logout" });
 
 
 app.Run();

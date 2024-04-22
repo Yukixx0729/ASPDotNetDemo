@@ -1,4 +1,3 @@
-
 using Blogorama.Web.Models;
 using Blogorama.Models.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -38,7 +37,7 @@ namespace Blogorama.Web.Controllers
                     }
                     else
                     {
-                        return RedirectToPage(returnUrl);
+                        return RedirectToRoute(returnUrl);
                     }
                 }
                 ModelState.AddModelError("", "Username or password is incorrect.");

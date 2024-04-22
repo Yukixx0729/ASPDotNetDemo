@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blogorama.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240416125122_Initial")]
-    partial class Initial
+    [Migration("20240422141115_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,6 +131,9 @@ namespace Blogorama.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<Guid>("BlogId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -139,6 +142,10 @@ namespace Blogorama.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("LinkedBlogId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -146,6 +153,8 @@ namespace Blogorama.Migrations
                     b.HasKey("CommentId");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("BlogId");
 
                     b.ToTable("Comments");
                 });
@@ -298,7 +307,15 @@ namespace Blogorama.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("ApplicationUserId");
 
+                    b.HasOne("Blogorama.Models.Entities.Blog", "Blog")
+                        .WithMany()
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Blog");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

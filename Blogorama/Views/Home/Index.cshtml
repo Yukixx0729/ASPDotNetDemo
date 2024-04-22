@@ -1,8 +1,40 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model List<Blogorama.Web.Models.BlogViewModel>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@functions {
+    public static string TruncateText(string input, int length)
+    {
+        if (input.Length <= length)
+        {
+            return input;
+        }
+        else
+        {
+            return input.Substring(0, length) + "...";
+        }
+    }
+}
+
+
+@foreach(var blogViewModel in Model)
+ {
+    <div class="card">
+        <div class="card-body">
+            @if(blogViewModel.Blog!=null){
+                 <h5 class="card-title"><a asp-controller="MyBlogs" asp-action="Details" asp-route-id="@blogViewModel.Blog.BlogId" >@blogViewModel.Blog.Title</a></h5>
+        <div class="d-flex justify-content-between mt-2 mb-1 text-secondary">
+        <p class="card-subtitle">Aurther: @blogViewModel.UserName</p>
+        <p class="card-subtitle ">@blogViewModel.Blog.CreatedAt</p>
+        </div>
+        <p class="card-text">@TruncateText(blogViewModel.Blog.Content,250)</p>
+            }
+        </div>
+    </div>
+    
+ }
+
+
+ 
+
