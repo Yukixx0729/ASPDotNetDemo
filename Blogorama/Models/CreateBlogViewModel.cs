@@ -7,6 +7,5 @@ namespace Blogorama.Web.Models
 
         public required string Content { get; set; }
 
-
     }
 }

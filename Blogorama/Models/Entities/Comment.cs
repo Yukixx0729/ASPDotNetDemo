@@ -8,7 +8,7 @@ namespace Blogorama.Models.Entities
         public Guid CommentId { get; set; }
 
         [Required]
-        [MaxLength(300)]
+        [MaxLength(1000)]
         public required string Content { get; set; }
 
         public DateTime CreatedAt { get; set; }
@@ -21,7 +21,7 @@ namespace Blogorama.Models.Entities
 
         [Required]
         [ForeignKey("BlogId")]
-        public required string LinkedBlogId { get; set; }
+        public required Guid LinkedBlogId { get; set; }
 
         public virtual required Blog Blog { get; set; }
     }

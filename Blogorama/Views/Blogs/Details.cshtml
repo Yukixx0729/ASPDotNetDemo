@@ -1,0 +1,66 @@
+@model Blogorama.Web.Models.BlogViewModel
+@using System.Security.Claims
+
+
+ @if (Model.Blog != null){
+<div class="container">
+    <h2 class="mt-3">@Model.Blog.Title</h2>
+    <div class="d-flex justify-content-between mt-3 mb-1 text-secondary"> 
+        <p >Author: @Model.UserName</p>
+        <p >Created At: @Model.Blog.CreatedAt</p>
+        
+    </div>
+   
+    <p class="mt-2">@Model.Blog.Content</p>
+    <div class="mt-5 text-end mr-1 d-flex justify-content-end">
+        @if (User?.Identity?.IsAuthenticated ==true && Model.Blog.UserId == User?.FindFirstValue(ClaimTypes.NameIdentifier))
+        {
+            <a class="btn btn-primary " asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.Blog.BlogId">Edit</a>
+            <form method="post" class="ms-3">
+                <button type="submit" class="btn btn-danger" asp-controller="Blogs" asp-action="Delete" asp-route-id="@Model.Blog.BlogId">Delete</button>
+            </form>
+        }
+        <a class="btn btn-light ms-3" asp-controller="Home" asp-action="Index"> Back</a>
+    </div>
+</div>
+
+<div class="mt-3">
+     @if (Model.Comments != null && Model.Comments.Any()){
+    <ul class="list-group">
+            @foreach (var comment in Model.Comments)
+            {
+                <li class="list-group-item mt-3 ">
+                    <p>@comment.CreatedAt</p>
+                    <p>@comment.Content</p>
+                     @if (User?.Identity?.IsAuthenticated ==true && Model.Blog.UserId == User?.FindFirstValue(ClaimTypes.NameIdentifier))
+                     {
+                        <button class="btn btn-primary">Delete</button>
+                     }
+                </li>
+            }
+    </ul>
+    }
+    else{
+        <p>No comment yet.</p>
+    }
+</div>
+
+<form class="mt-3" method="post" asp-controller="Comments" asp-action="Create">
+    <h4 class="mt-3">Leave a comment</h4>
+    <input type="hidden" name="LinkedBlogId" value="@Model.Blog.BlogId"/>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mt-3">
+        <textarea name="Content" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="NewComment.Content" class="text-danger"></span>
+    </div>
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Post</button>
+        <button type="button" class="btn btn-light ms-3">Cancel</button>
+    </div>
+</form>
+ }
+else
+{
+    <p>The blog is not found.</p>
+}
+

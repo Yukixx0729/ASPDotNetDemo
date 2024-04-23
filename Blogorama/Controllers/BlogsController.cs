@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blogorama.Web.Controllers
 {
-    public class MyBlogsController : Controller
+    public class BlogsController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _dbContext;
 
-        public MyBlogsController(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext)
+        public BlogsController(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _dbContext = dbContext;
@@ -28,13 +28,11 @@ namespace Blogorama.Web.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-
             var userBlogs = _dbContext.Blogs.Where(b => b.UserId == user.Id).ToList();
             return View(userBlogs);
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Details(Guid id)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -49,11 +47,12 @@ namespace Blogorama.Web.Controllers
             }
             var writer = await _userManager.FindByIdAsync(blog.UserId);
             var userName = writer?.UserName ?? "Unknown";
-
+            var comments = await _dbContext.Comments.Where(c => c.LinkedBlogId == id).OrderByDescending(c => c.CreatedAt).ToListAsync();
             var blogViewModel = new BlogViewModel
             {
                 Blog = blog,
-                UserName = userName
+                UserName = userName,
+                Comments = comments
             };
 
             return View(blogViewModel);
@@ -64,7 +63,11 @@ namespace Blogorama.Web.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             var blog = await _dbContext.Blogs.FindAsync(id);
-
+            var user = await _userManager.GetUserAsync(User);
+            if (blog?.UserId != user?.Id)
+            {
+                return NotFound();
+            }
             return View(blog);
         }
 
@@ -73,12 +76,14 @@ namespace Blogorama.Web.Controllers
         public async Task<IActionResult> Edit(NewBlog model)
         {
             var blog = await _dbContext.Blogs.FindAsync(model.BlogId);
-            if (blog is not null)
+            var user = await _userManager.GetUserAsync(User);
+            if (blog != null && user != null && user.Id == blog.UserId)
             {
+
                 blog.Title = model.Title;
                 blog.Content = model.Content;
                 await _dbContext.SaveChangesAsync();
-                return RedirectToAction("Details", "MyBlogs", new { id = blog.BlogId });
+                return RedirectToAction("Details", "Blogs", new { id = blog.BlogId });
             }
             else
             {
@@ -88,15 +93,16 @@ namespace Blogorama.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
             var blog = await _dbContext.Blogs.FindAsync(id);
-
-            if (blog != null)
+            var user = await _userManager.GetUserAsync(User);
+            if (blog != null && user != null && user.Id == blog.UserId)
             {
                 _dbContext.Blogs.Remove(blog);
                 await _dbContext.SaveChangesAsync();
-                return RedirectToAction("List", "MyBlogs");
+                return RedirectToAction("List", "Blogs");
             }
             else
             {

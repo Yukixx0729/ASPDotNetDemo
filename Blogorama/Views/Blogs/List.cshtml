@@ -12,7 +12,7 @@ else
         @foreach (var blog in Model)
         {
             <li class="list-group-item mt-3 d-flex justify-content-between">
-                <a asp-controller="MyBlogs" asp-action="Details" asp-route-id="@blog.BlogId">@blog.Title</a>
+                <a asp-controller="Blogs" asp-action="Details" asp-route-id="@blog.BlogId">@blog.Title</a>
                 <span>@blog.CreatedAt</span>
             </li>
         }

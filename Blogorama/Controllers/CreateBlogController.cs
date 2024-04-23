@@ -54,7 +54,7 @@ namespace Blogorama.Web.Controllers
                 }
 
             }
-            return RedirectToAction("List", "MyBlogs");
+            return RedirectToAction("List", "Blogs");
         }
     }
 }

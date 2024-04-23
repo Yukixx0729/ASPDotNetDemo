@@ -182,11 +182,11 @@ namespace Blogorama.Migrations
                 columns: table => new
                 {
                     CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    LinkedBlogId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LinkedBlogId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BlogId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
