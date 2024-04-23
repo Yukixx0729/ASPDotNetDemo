@@ -6,7 +6,7 @@
 <div class="container">
     <h2 class="mt-3">@Model.Blog.Title</h2>
     <div class="d-flex justify-content-between mt-3 mb-1 text-secondary"> 
-        <p >Author: @Model.UserName</p>
+        <p >Author: @Model.Blog.ApplicationUser.UserName</p>
         <p >Created At: @Model.Blog.CreatedAt</p>
         
     </div>
@@ -29,12 +29,16 @@
     <ul class="list-group">
             @foreach (var comment in Model.Comments)
             {
-                <li class="list-group-item mt-3 ">
-                    <p>@comment.CreatedAt</p>
-                    <p>@comment.Content</p>
+                <li class="list-group-item mt-3 px-4">
+                    <div class=" d-flex justify-content-between">
+                        <span>@comment.ApplicationUser.UserName</span>
+                        <span>@comment.CreatedAt</span>
+                    </div>
+                    
+                    <p class="mt-3">@comment.Content</p>
                      @if (User?.Identity?.IsAuthenticated ==true && Model.Blog.UserId == User?.FindFirstValue(ClaimTypes.NameIdentifier))
                      {
-                        <button class="btn btn-primary">Delete</button>
+                        <button class="btn btn-primary ">Delete</button>
                      }
                 </li>
             }

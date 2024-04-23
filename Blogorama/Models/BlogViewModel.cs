@@ -5,7 +5,6 @@ namespace Blogorama.Web.Models
     public class BlogViewModel
     {
         public Blog? Blog { get; set; }
-        public required string UserName { get; set; }
 
         public NewComment NewComment { get; set; }
         public List<Comment> Comments { get; set; }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Blogorama.Models.Entities;
 using Blogorama.Data;
 using Blogorama.Web.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blogorama.Controllers;
 
@@ -24,17 +25,14 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        var blogs = _dbContext.Blogs.OrderByDescending(b => b.CreatedAt).ToList();
-        var blogViewModels = blogs.Select(blog =>
-            {
-                var user = _userManager.FindByIdAsync(blog.UserId).Result;
-                var userName = user?.UserName ?? "Unknown";
-                return new BlogViewModel
-                {
-                    Blog = blog,
-                    UserName = userName
-                };
-            }).ToList();
+        var blogs = _dbContext.Blogs
+            .Include(b => b.ApplicationUser)
+            .OrderByDescending(b => b.CreatedAt)
+            .ToList();
+        var blogViewModels = blogs.Select(blog => new BlogViewModel
+        {
+            Blog = blog,
+        }).ToList();
         return View(blogViewModels);
     }
 

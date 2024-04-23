@@ -40,18 +40,17 @@ namespace Blogorama.Web.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-            var blog = await _dbContext.Blogs.FirstOrDefaultAsync(b => b.BlogId == id);
+            var blog = await _dbContext.Blogs.Include(b => b.ApplicationUser)
+                                 .FirstOrDefaultAsync(b => b.BlogId == id);
             if (blog == null)
             {
                 return NotFound();
             }
             var writer = await _userManager.FindByIdAsync(blog.UserId);
-            var userName = writer?.UserName ?? "Unknown";
-            var comments = await _dbContext.Comments.Where(c => c.LinkedBlogId == id).OrderByDescending(c => c.CreatedAt).ToListAsync();
+            var comments = await _dbContext.Comments.Where(c => c.LinkedBlogId == id).OrderByDescending(c => c.CreatedAt).Include(b => b.ApplicationUser).ToListAsync();
             var blogViewModel = new BlogViewModel
             {
                 Blog = blog,
-                UserName = userName,
                 Comments = comments
             };
 
