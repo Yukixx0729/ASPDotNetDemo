@@ -99,6 +99,8 @@ namespace Blogorama.Web.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (blog != null && user != null && user.Id == blog.UserId)
             {
+                var comments = _dbContext.Comments.Where(c => c.LinkedBlogId == blog.BlogId);
+                _dbContext.Comments.RemoveRange(comments);
                 _dbContext.Blogs.Remove(blog);
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("List", "Blogs");

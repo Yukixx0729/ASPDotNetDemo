@@ -54,6 +54,20 @@ namespace Blogorama.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var comment = await _dbContext.Comments.FirstOrDefaultAsync(c => c.CommentId == id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Comments.Remove(comment);
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction("Details", "Blogs", new { id = comment.LinkedBlogId });
+        }
 
     }
 }

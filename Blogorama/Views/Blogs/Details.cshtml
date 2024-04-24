@@ -31,14 +31,17 @@
             {
                 <li class="list-group-item mt-3 px-4">
                     <div class=" d-flex justify-content-between">
-                        <span>@comment.ApplicationUser.UserName</span>
+                        <span>By: @comment.ApplicationUser.UserName</span>
                         <span>@comment.CreatedAt</span>
                     </div>
                     
                     <p class="mt-3">@comment.Content</p>
-                     @if (User?.Identity?.IsAuthenticated ==true && Model.Blog.UserId == User?.FindFirstValue(ClaimTypes.NameIdentifier))
+                     @if (User?.Identity?.IsAuthenticated ==true && Model.Blog.UserId != User?.FindFirstValue(ClaimTypes.NameIdentifier))
                      {
-                        <button class="btn btn-primary ">Delete</button>
+                        <form method="post" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.CommentId" >
+                            <button class="btn btn-primary "  type = "submit" >Delete</button>
+                        </form>
+                        
                      }
                 </li>
             }
